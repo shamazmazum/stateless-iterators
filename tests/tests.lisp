@@ -83,4 +83,4 @@
     (is (cequalp (si:imap #'alex:flatten
                           (si:product a (si:product a a)))
                  '((0 0 0) (0 0 1) (0 1 0) (0 1 1)
-                   (1 0 0) (1 0 1) (1 1 0) (1 1 1))))))
+                   (1 0 0) (1 0 1) (1 1 0) (1 1 2))))))
