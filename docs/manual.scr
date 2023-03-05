@@ -1,0 +1,66 @@
+@begin[ref=index](section)
+   @title(Overview)
+   @c(stateless-iterators) is a library which provides Lua-like stateless
+   iterators for Common Lisp. Stateless iterators work as follows:
+   @begin(enum)
+     @item(Suppose you have a function @c(next) which takes an argument
+           @c(state) and returns two values: a result of the current iteration
+           step and a new state. Should iteration stop @c(next) returns a symbol
+           @c(stateless-iterators:stop) as the new state.)
+     @item(Iterator is a pair of the previously described function and an
+           initial state: @c((stateless-iterator:iterator #'next
+           initial-state)).)
+     @iter(A function @c(stateless-iterators:iterate-for-effects) takes an
+           iterator and a function @c(fn). It calls the iterating function
+           @c(next) with the initial state of the iterator. If iteration does
+           not stop, the function @c(fn) is called with the first value returned
+           by @c(next) as its only argument. Values returned by @c(fn) are
+           ignored.)
+     @iter(@c(next) is called with the second value previously returned by
+           @c(next) and the process repeates again until the next state is
+           a symbol @c(stateless-iterators:stop).)
+   @end(enum)
+
+   Here is a simple iterator which infinitely counts from @c(n) by 1:
+   @begin[lang=lisp](code)
+(defun count-from/next (state)
+  (values state (1+ state)))
+
+(defun count-from (n)
+  (stateles-iterators:iterator #'count-from/next n))
+   @end(code)
+
+   More information about available iterators is contained in the API section.
+@end(section)
+
+@begin(section)
+  @title(API)
+
+  @u(Basic iteration routines)
+  @cl:with-package[name="stateless-iterators"](
+    @cl:doc(function iterate-for-effects)
+    @cl:doc(macro do-iterator)
+    @cl:doc(function collect)
+  )
+
+  @u(Available iterators)
+  @cl:with-package[name="stateless-iterators"](
+    @cl:doc(function list->iterator)
+    @cl:doc(function vector->iterator)
+    @cl:doc(function take)
+    @cl:doc(function iterate)
+    @cl:doc(function count-from)
+    @cl:doc(function range)
+    @cl:doc(function take-while)
+    @cl:doc(function drop-while)
+    @cl:doc(function imap)
+    @cl:doc(function zip)
+    @cl:doc(function zip*)
+    @cl:doc(function repeat)
+    @cl:doc(function replicate)
+    @cl:doc(function foldl)
+    @cl:doc(function cycle)
+    @cl:doc(function concat)
+    @cl:doc(function product)
+)
+@end(section)
