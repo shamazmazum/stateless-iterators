@@ -1,0 +1,31 @@
+name: Documentation
+
+on: [push]
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Checkout Codex
+        uses: actions/checkout@v2
+        with:
+          repository: shamazmazum/codex
+          path: ~/lisp/codex
+      - name: Checkout docparser
+        uses: actions/checkout@v2
+        with:
+          repository: shamazmazum/docparser
+          path: ~/lisp/docparser
+      - name: Install roswell
+        run: |
+          curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
+      - name: Build documentation
+        run: |
+          ros -s codex -e '(codex:document :stateless-iterators :skip-undocumented t)'
+      - name: Deploy to GH pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/build/stateless-iterators/html
