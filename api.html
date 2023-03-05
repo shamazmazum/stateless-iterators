@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+  API &ndash; stateless-iterators
+</title>
+    <link rel="stylesheet" href="static/style.css"/>
+    
+  <link rel="stylesheet" href="static/highlight.css"/>
+  <script src="static/highlight.js"></script>
+  <style>
+   /* Highlight the current top-level TOC item, and hide the TOC of all other items */
+
+   .toc a[data-node="api"] {
+       /*color: #AD3108;*/
+   }
+
+   .toc ol {
+       display: none;
+   }
+
+   .toc li a[data-node="api"] {
+       font-weight: bold;
+   }
+
+   .toc li a[data-node="api"] + ol {
+       display: block;
+   }
+
+   .toc li a[data-node="api"] + ol li {
+       margin-left: 10px;
+   }
+  </style>
+
+  </head>
+  <body>
+    
+  <h1 class="doc-title">stateless-iterators</h1>
+  <article id="article" data-section="api">
+    <aside>
+      <ol class="toc"><li><a href="index.html" data-node="index">Overview</a></li><li><a href="api.html" data-node="api">API</a></li></ol>
+    </aside>
+    <main class="codex-section">
+      <header>
+        <h2 class="section-title">API</h2>
+      </header>
+      <div class="content">
+        <p>  <u>Basic iteration routines</u>
+  
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">iterate-for-effects</code><code class="codex-lambda-list">(iterator function)</code><div class="codex-docstring">Extract a value from <code>iterator</code> and call <code>function</code> with that
+value. Repeat until the next state is <code>stop</code> and return no values.</div></div>
+    <div class="codex-doc-node codex-operator codex-macro"><code class="codex-name">do-iterator</code><code class="codex-lambda-list">((val iterator) &amp;body body)</code><div class="codex-docstring">Execute <code>body</code> for each value from <code>iterator</code>. The value is
+bound with <code>val</code>. This is equal to the following code:<pre><code class="lisp">(iterate-for-effects
+  iterator
+  (lambda (val) ...))
+</code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">collect</code><code class="codex-lambda-list">(iterator)</code><div class="codex-docstring">Collect all values from an iterator into a list. This is the
+inverse of <code>list-&gt;iterator</code>.</div></div>
+  </p><p>  <u>Available iterators</u>
+  
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">list-&gt;iterator</code><code class="codex-lambda-list">(list)</code><div class="codex-docstring">Convert a list to an iterator. This is the inverse of <code>collect</code>.</div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">vector-&gt;iterator</code><code class="codex-lambda-list">(vector)</code><div class="codex-docstring">Convert a vector to an iterator.</div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">take</code><code class="codex-lambda-list">(n iterator)</code><div class="codex-docstring">Create an iterator which takes <code>n</code> values from <code>iterator</code> and
+stops.<pre><code class="lisp">(collect (take 3 (list-&gt;iterator '(1 2 3 4)))) -&gt; '(1 2 3)
+(collect (take 3 (list-&gt;iterator '(1)))) -&gt; '(1)
+</code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">iterate</code><code class="codex-lambda-list">(function x)</code><div class="codex-docstring">Create an infinite iterator whose values are <code>x</code><code>f(x)</code>
+<code>f(f(x))</code> …<pre><code class="lisp">(collect (take 3 (iterate (lambda (x)(/ x 2)) 1))) -&gt; '(1 1/2 1/4)
+</code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">count-from</code><code class="codex-lambda-list">(n)</code><div class="codex-docstring">An infinite counting iterator which starts from <code>n</code> and
+increments each next value by 1.<pre><code class="lisp">(collect (take 4 (count-from 1))) -&gt; '(1 2 3 4)
+</code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">range</code><code class="codex-lambda-list">(from to &amp;optional (step 1))</code><div class="codex-docstring">Create an iterator which counts from <code>from</code> to <code>to</code>(excluding
+<code>to</code>) stepping by <code>step</code>.<pre><code class="lisp">(collect (range 1 8 2)) -&gt; '(1 3 5 7)
+</code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">take-while</code><code class="codex-lambda-list">(predicate iterator)</code><div class="codex-docstring">Create an iterator which returns values from <code>iterator</code> while
+<code>predicate</code> is true.<pre><code class="lisp">(collect (take-while #'oddp (list-&gt;iterator '(1 3 8 2 5)))) -&gt; '(1 3)
+</code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">drop-while</code><code class="codex-lambda-list">(predicate iterator)</code><div class="codex-docstring">Create an iterator which has the same values as in <code>iterator</code>
+but drops initial values which satisfy the <code>predicate</code>.<pre><code class="lisp">(collect (drop-while #'oddp (list-&gt;iterator '(1 3 8 2 5)))) -&gt; '(8 2 5)
+</code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">imap</code><code class="codex-lambda-list">(function &amp;rest iterators)</code><div class="codex-docstring">Create an iterator which applies <code>function</code> to values of
+<code>iterators</code>. This iterator stops when at least one of <code>iterators</code> stops.<pre><code class="lisp">(collect (imap #'+ (list-&gt;iterator '(1 3 8 2))(count-from 0))) -&gt; '(1 4 10 5)
+</code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">zip</code><code class="codex-lambda-list">(iter1 iter2)</code><div class="codex-docstring">Create an iterator which returns consed pairs of values of
+<code>iter1</code> and <code>iter2</code>.<pre><code class="lisp">(collect (take 3 (zip (count-from 1)(count-from 2)))) -&gt; '((1 . 2)(2 . 3)(3 . 4))
+</code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">zip*</code><code class="codex-lambda-list">(&amp;rest iterators)</code><div class="codex-docstring">Create an iterator which returns lists of values from <code>iterators</code>.<pre><code class="lisp">(collect
+    (take 3 (zip* (count-from 1)
+                  (count-from 2)
+                  (count-from 3)))) -&gt; '((1 2 3)(2 3 4)(3 4 5))
+</code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">repeat</code><code class="codex-lambda-list">(value)</code><div class="codex-docstring">Create an iterator which repeats <code>value</code> infinitely.</div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">replicate</code><code class="codex-lambda-list">(value n)</code><div class="codex-docstring">Create an iterator which repeats <code>value</code><code>n</code> times.<pre><code class="lisp">(replicate x n) = (take n (repeat x))
+</code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">foldl</code><code class="codex-lambda-list">(function init iterator)</code><div class="codex-docstring">Left-associative fold for iterators. The returned value is the same
+as for the following, but without consing:<pre><code class="lisp">(reduce function (collect iterator) :initial-value init)
+</code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">cycle</code><code class="codex-lambda-list">(iterator)</code><div class="codex-docstring">Repeat values of <code>iterator</code> infinitely.<pre><code class="lisp">(collect (take 5 (cycle (list-&gt;iterator '(1 2 3))))) -&gt; '(1 2 3 1 2)
+</code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">concat</code><code class="codex-lambda-list">(&amp;rest iterators)</code><div class="codex-docstring">Concatenate one or more iterators into one iterator.<pre><code class="lisp">(collect (concat (replicate 3 2)(replicate 1 3))) -&gt; '(3 3 1 1 1)
+</code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">product</code><code class="codex-lambda-list">(outer inner)</code><div class="codex-docstring">Create an iterator which has all possible pairs <code>(x . y)</code> where
+<code>x</code> ∈ <code>outer</code> and <code>y</code> ∈ <code>inner</code>.<pre><code class="lisp">(collect (product (range 1 3)(range 3 5))) -&gt; '((1 . 3)(1 . 4)(2 . 3)(2 . 4))
+</code></pre></div></div>
+
+</p>
+      </div>
+    </main>
+  </article>
+  <footer>
+    <div class="info">
+      Created with <a href="https://github.com/CommonDoc/codex">Codex</a>.
+    </div>
+  </footer>
+  <script>
+   HighlightLisp.highlight_auto();
+  </script>
+
+  </body>
+</html>

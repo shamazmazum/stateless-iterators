@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+  Overview &ndash; stateless-iterators
+</title>
+    <link rel="stylesheet" href="static/style.css"/>
+    
+  <link rel="stylesheet" href="static/highlight.css"/>
+  <script src="static/highlight.js"></script>
+  <style>
+   /* Highlight the current top-level TOC item, and hide the TOC of all other items */
+
+   .toc a[data-node="index"] {
+       /*color: #AD3108;*/
+   }
+
+   .toc ol {
+       display: none;
+   }
+
+   .toc li a[data-node="index"] {
+       font-weight: bold;
+   }
+
+   .toc li a[data-node="index"] + ol {
+       display: block;
+   }
+
+   .toc li a[data-node="index"] + ol li {
+       margin-left: 10px;
+   }
+  </style>
+
+  </head>
+  <body>
+    
+  <h1 class="doc-title">stateless-iterators</h1>
+  <article id="article" data-section="index">
+    <aside>
+      <ol class="toc"><li><a href="index.html" data-node="index">Overview</a></li><li><a href="api.html" data-node="api">API</a></li></ol>
+    </aside>
+    <main class="codex-section">
+      <header>
+        <h2 class="section-title">Overview</h2>
+      </header>
+      <div class="content">
+        <p>
+   <code>stateless-iterators</code> is a library which provides Lua-like stateless
+   iterators for Common Lisp. Stateless iterators work as follows:
+   </p><ol><li>Suppose you have a function <code>next</code> which takes an argument
+           <code>state</code> and returns two values: a result of the current iteration
+           step and a new state. Should iteration stop <code>next</code> returns a symbol
+           <code>stateless-iterators:stop</code> as the new state.</li><li>Iterator is a pair of the previously described function and an
+           initial state: <code>(stateless-iterator:iterator #'next
+           initial-state)</code>.</li><li>A function <code>stateless-iterators:iterate-for-effects</code> takes an
+           iterator and a function <code>fn</code>. It calls the iterating function
+           <code>next</code> with the initial state of the iterator. If iteration does
+           not stop, the function <code>fn</code> is called with the first value returned
+           by <code>next</code> as its only argument. Values returned by <code>fn</code> are
+           ignored.</li><li><code>next</code> is called with the second value previously returned by
+           <code>next</code> and the process repeates again until the next state is
+           a symbol <code>stateless-iterators:stop</code>.</li></ol><p>   Here is a simple iterator which infinitely counts from <code>n</code> by 1:
+   </p><pre><code class="lisp">(defun count-from/next (state)
+  (values state (1+ state)))
+
+(defun count-from (n)
+  (stateles-iterators:iterator #'count-from/next n))
+   </code></pre><p>   More information about available iterators is contained in the API section.
+</p>
+      </div>
+    </main>
+  </article>
+  <footer>
+    <div class="info">
+      Created with <a href="https://github.com/CommonDoc/codex">Codex</a>.
+    </div>
+  </footer>
+  <script>
+   HighlightLisp.highlight_auto();
+  </script>
+
+  </body>
+</html>
