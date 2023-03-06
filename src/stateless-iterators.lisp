@@ -12,8 +12,9 @@
 (defun iterate-for-effects (iterator function)
   "Extract a value from @c(iterator) and call @c(function) with that
 value. Repeat until the next state is @c(stop) and return no values."
-  (multiple-value-bind (next state)
-      (sera:deconstruct iterator)
+  (declare (optimize (speed 3)))
+  (let ((next  (iterator-next       iterator))
+        (state (iterator-init-state iterator)))
     (labels ((%iter (state)
                (multiple-value-bind (value next-state)
                    (funcall next state)
@@ -168,8 +169,9 @@ but drops initial values which satisfy the @c(predicate).
 @begin[lang=lisp](code)
 (collect (drop-while #'oddp (list->iterator '(1 3 8 2 5)))) -> '(8 2 5)
 @end(code)"
-  (multiple-value-bind (next init-state)
-      (sera:deconstruct iterator)
+  (declare (optimize (speed 3)))
+  (let ((next       (iterator-next       iterator))
+        (init-state (iterator-init-state iterator)))
     (labels ((%drop (state)
                (multiple-value-bind (value next-state)
                    (funcall next state)
@@ -181,15 +183,19 @@ but drops initial values which satisfy the @c(predicate).
 
 ;; Map
 (defun imap/next (nexts function)
+  (declare (optimize (speed 3))
+           (type function function))
   (lambda (states)
-    (let* ((values-and-states
-            (loop for next  in nexts
-                  for state in states collect
-                  (multiple-value-call #'cons
-                    (funcall next state))))
-           (values      (mapcar #'car values-and-states))
-           (next-states (mapcar #'cdr values-and-states)))
-      (if (some (lambda (x) (eq x 'stop)) next-states)
+    (destructuring-bind (values . next-states)
+        (loop for next in nexts
+              for state in states
+              for value-and-next-state = (multiple-value-call #'cons
+                                           (funcall (the function next) state))
+              collect (car value-and-next-state) into values
+              collect (cdr value-and-next-state) into next-states
+              finally (return (cons values next-states)))
+      (declare (type list values next-states))
+      (if (find 'stop next-states :test #'eq)
           (values nil 'stop)
           (values (apply function values)
                   next-states)))))
