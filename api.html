@@ -53,7 +53,7 @@
     <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">iterate-for-effects</code><code class="codex-lambda-list">(iterator function)</code><div class="codex-docstring">Extract a value from <code>iterator</code> and call <code>function</code> with that
 value. Repeat until the next state is <code>stop</code> and return no values.</div></div>
     <div class="codex-doc-node codex-operator codex-macro"><code class="codex-name">do-iterator</code><code class="codex-lambda-list">((val iterator) &amp;body body)</code><div class="codex-docstring">Execute <code>body</code> for each value from <code>iterator</code>. The value is
-bound with <code>val</code>. This is equal to the following code:<pre><code class="lisp">(iterate-for-effects
+bound to <code>val</code>. This is equal to the following code:<pre><code class="lisp">(iterate-for-effects
   iterator
   (lambda (val) ...))
 </code></pre></div></div>
