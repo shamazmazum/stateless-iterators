@@ -69,7 +69,28 @@
 
 (defun count-from (n)
   (stateles-iterators:iterator #'count-from/next n))
-   </code></pre><p>   More information about available iterators is contained in the API section.
+   </code></pre><p>   What's the difference with other iterator libraries (snakes being my
+   favorite)? Iterators in this library do not contain mutable state inside
+   themselves and so are reusable:
+   </p><pre><code class="lisp">CL-USER&gt; (defparameter *iter* (stateless-iterators:range 1 10))
+*ITER*
+CL-USER&gt; (stateless-iterators:collect *iter*)
+(1 2 3 4 5 6 7 8 9)
+CL-USER&gt; (stateless-iterators:collect *iter*)
+(1 2 3 4 5 6 7 8 9)
+CL-USER&gt;
+   </code></pre><p>   This allows to write iterators like <code>product</code> where one of the iterators
+   must be restartable:
+   </p><pre><code class="lisp">CL-USER&gt; (let ((a (stateless-iterators:range 0 3)))
+           (stateless-iterators:collect
+               (stateless-iterators:product a a)))
+((0 . 0)(0 . 1)(0 . 2)(1 . 0)(1 . 1)(1 . 2)(2 . 0)(2 . 1)(2 . 2))
+CL-USER&gt;
+   </code></pre><p>   <b>NB</b>: All functions which are passed as arguments to functions of this
+   library are called in unspecified order, therefore they must not have any
+   side-effects. One exception to this is a function passed to
+   <code>iterate-for-effects</code>. It is called right after a new value is obtained
+   from the iterator.
 </p>
       </div>
     </main>
