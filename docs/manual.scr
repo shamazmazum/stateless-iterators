@@ -30,7 +30,28 @@
   (stateles-iterators:iterator #'count-from/next n))
    @end(code)
 
-   More information about available iterators is contained in the API section.
+   What's the difference with other iterator libraries (snakes being my
+   favorite)? Iterators in this library do not contain mutable state inside
+   themselves and so are reusable:
+   @begin[lang=lisp](code)
+CL-USER> (defparameter *iter* (stateless-iterators:range 1 10))
+*ITER*
+CL-USER> (stateless-iterators:collect *iter*)
+(1 2 3 4 5 6 7 8 9)
+CL-USER> (stateless-iterators:collect *iter*)
+(1 2 3 4 5 6 7 8 9)
+CL-USER>
+   @end(code)
+
+   This allows to write iterators like @c(product) where one of the iterators
+   must be restartable:
+   @begin[lang=lisp](code)
+CL-USER> (let ((a (stateless-iterators:range 0 3)))
+           (stateless-iterators:collect
+               (stateless-iterators:product a a)))
+((0 . 0) (0 . 1) (0 . 2) (1 . 0) (1 . 1) (1 . 2) (2 . 0) (2 . 1) (2 . 2))
+CL-USER>
+   @end(code)
 @end(section)
 
 @begin(section)
