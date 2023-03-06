@@ -26,7 +26,7 @@ value. Repeat until the next state is @c(stop) and return no values."
 
 (defmacro do-iterator ((val iterator) &body body)
   "Execute @c(body) for each value from @c(iterator). The value is
-bound with @c(val). This is equal to the following code:
+bound to @c(val). This is equal to the following code:
 
 @begin[lang=lisp](code)
 (iterate-for-effects
