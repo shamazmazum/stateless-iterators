@@ -52,6 +52,12 @@ CL-USER> (let ((a (stateless-iterators:range 0 3)))
 ((0 . 0) (0 . 1) (0 . 2) (1 . 0) (1 . 1) (1 . 2) (2 . 0) (2 . 1) (2 . 2))
 CL-USER>
    @end(code)
+
+   @b(NB): All functions which are passed as arguments to functions of this
+   library are called in unspecified order, therefore they must not have any
+   side-effects. One exception to this is a function passed to
+   @c(iterate-for-effects). It is called right after a new value is obtained
+   from the iterator.
 @end(section)
 
 @begin(section)
