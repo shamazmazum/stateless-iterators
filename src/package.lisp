@@ -25,4 +25,5 @@
            #:iterate
            #:cycle
            #:concat
-           #:product))
+           #:product
+           #:filter))

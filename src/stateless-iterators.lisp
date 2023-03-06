@@ -146,7 +146,7 @@ increments each next value by 1.
           (values value next-state)
           (values nil   'stop)))))
 
-(sera:-> take-while ((sera:-> (t) (values boolean &optional)) iterator)
+(sera:-> take-while ((sera:-> (t) (values t &optional)) iterator)
          (values iterator &optional))
 (defun take-while (predicate iterator)
   "Create an iterator which returns values from @c(iterator) while
@@ -159,7 +159,7 @@ increments each next value by 1.
             (iterator-init-state iterator)))
 
 ;; Drop while
-(sera:-> drop-while ((sera:-> (t) (values boolean &optional)) iterator)
+(sera:-> drop-while ((sera:-> (t) (values t &optional)) iterator)
          (values iterator &optional))
 (defun drop-while (predicate iterator)
   "Create an iterator which has the same values as in @c(iterator)
@@ -356,3 +356,28 @@ as for the following, but without consing:
                           (iterator-init-state inner))
             (cons (iterator-init-state outer)
                   (iterator-init-state inner))))
+
+;; Filter
+(defun filter/next (next predicate)
+  (labels ((%next (state)
+             (multiple-value-bind (value next-state)
+                 (funcall next state)
+               (cond
+                 ((eq next-state 'stop)
+                  (values nil 'stop))
+                 ((funcall predicate value)
+                  (values value next-state))
+                 (t (%next next-state))))))
+    #'%next))
+
+(sera:-> filter ((function (t) (values t &optional)) iterator)
+         (values iterator &optional))
+(defun filter (predicate iterator)
+  "Create an iterator which returns only those values of @c(iterator)
+which satisfy @c(predicate).
+
+@begin[lang=lisp](code)
+(collect (take 6 (filter #'oddp (count-from 0)))) -> '(1 3 5 7 9 11)
+@end(code)"
+  (iterator (filter/next (iterator-next iterator) predicate)
+            (iterator-init-state iterator)))

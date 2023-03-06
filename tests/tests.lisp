@@ -84,3 +84,7 @@
                           (si:product a (si:product a a)))
                  '((0 0 0) (0 0 1) (0 1 0) (0 1 1)
                    (1 0 0) (1 0 1) (1 1 0) (1 1 1))))))
+
+(test filter
+      (is (cequalp (si:take 6 (si:filter #'oddp (si:count-from 0)))
+                   '(1 3 5 7 9 11))))

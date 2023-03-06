@@ -83,5 +83,6 @@ CL-USER>
     @cl:doc(function cycle)
     @cl:doc(function concat)
     @cl:doc(function product)
+    @cl:doc(function filter)
 )
 @end(section)
