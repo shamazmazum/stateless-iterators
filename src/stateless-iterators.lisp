@@ -24,6 +24,27 @@ value. Repeat until the next state is @c(stop) and return no values."
       (%iter state)))
   (values))
 
+(sera:-> consume-one (iterator)
+         (values t iterator &optional))
+(defun consume-one (iterator)
+  "Get exactly one value from @c(iterator) and return this value and a
+new iterator without this value. Useful when we need to get the first
+value which satisfies some condition:
+
+@begin[lang=lisp](code)
+(consume-one
+ (drop-while
+  #'oddp
+  (list->iterator '(1 3 5 7 2 3 5))))
+;; => 2, (ITERATOR #<FUNCTION STATELESS-ITERATORS::LIST->ITERATOR/NEXT> (3 5))
+@end(code)"
+  (declare (optimize (speed 3)))
+  (let ((next (iterator-next        iterator))
+        (state (iterator-init-state iterator)))
+    (multiple-value-bind (value next-state)
+        (funcall next state)
+      (values value (iterator next next-state)))))
+
 (defmacro do-iterator ((val iterator) &body body)
   "Execute @c(body) for each value from @c(iterator). The value is
 bound to @c(val). This is equal to the following code:

@@ -6,6 +6,7 @@
            #:iterate-for-effects
            #:do-iterator
            #:collect
+           #:consume-one
 
            #:list->iterator
            #:vector->iterator
