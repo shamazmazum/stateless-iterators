@@ -59,6 +59,14 @@ bound to <code>val</code>. This is equal to the following code:<pre><code class=
 </code></pre></div></div>
     <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">collect</code><code class="codex-lambda-list">(iterator)</code><div class="codex-docstring">Collect all values from an iterator into a list. This is the
 inverse of <code>list-&gt;iterator</code>.</div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">consume-one</code><code class="codex-lambda-list">(iterator)</code><div class="codex-docstring">Get exactly one value from <code>iterator</code> and return this value and a
+new iterator without this value. Useful when we need to get the first
+value which satisfies some condition:<pre><code class="lisp">(consume-one
+ (drop-while
+  #'oddp
+  (list-&gt;iterator '(1 3 5 7 2 3 5))))
+;; =&gt; 2, (ITERATOR #&lt;FUNCTION STATELESS-ITERATORS::LIST-&gt;ITERATOR/NEXT&gt; (3 5))
+</code></pre></div></div>
   </p><p>  <u>Available iterators</u>
   
     <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">list-&gt;iterator</code><code class="codex-lambda-list">(list)</code><div class="codex-docstring">Convert a list to an iterator. This is the inverse of <code>collect</code>.</div></div>
