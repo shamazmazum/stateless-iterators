@@ -45,6 +45,21 @@ value which satisfies some condition:
         (funcall next state)
       (values value (iterator next next-state)))))
 
+(sera:-> nth (unsigned-byte iterator)
+         (values t iterator &optional))
+(defun nth (n iterator)
+  "Get n-th value from an iterator.
+
+@begin[lang=lisp](code)
+(nth 4 (count-from 0))
+;; => 5, (STATELESS-ITERATORS:ITERATOR #<FUNCTION STATELESS-ITERATORS::COUNT-FROM/NEXT> 6)
+@end(code)"
+  (multiple-value-bind (x next)
+      (consume-one iterator)
+    (if (zerop n)
+        (values x next)
+        (nth (1- n) next))))
+
 (defmacro do-iterator ((val iterator) &body body)
   "Execute @c(body) for each value from @c(iterator). The value is
 bound to @c(val). This is equal to the following code:

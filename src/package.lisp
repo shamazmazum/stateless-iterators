@@ -1,5 +1,6 @@
 (defpackage stateless-iterators
   (:use #:cl)
+  (:shadow #:nth)
   (:local-nicknames (#:sera #:serapeum))
   (:export #:iterator
            #:stop
@@ -7,6 +8,7 @@
            #:do-iterator
            #:collect
            #:consume-one
+           #:nth
 
            #:list->iterator
            #:vector->iterator

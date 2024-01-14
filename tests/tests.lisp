@@ -21,6 +21,9 @@
 (test count-from+take
   (is (cequalp (si:take 5 (si:count-from 2)) '(2 3 4 5 6))))
 
+(test nth
+  (is (= (si:nth 6 (si:count-from 0)) 6)))
+
 (test range
   (is (cequalp (si:range 1 10)   '(1 2 3 4 5 6 7 8 9)))
   (is (cequalp (si:range 1 10 2) '(1 3 5 7 9))))

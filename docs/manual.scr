@@ -69,6 +69,7 @@ CL-USER>
     @cl:doc(macro do-iterator)
     @cl:doc(function collect)
     @cl:doc(function consume-one)
+    @cl:doc(function nth)
   )
 
   @u(Available iterators)
