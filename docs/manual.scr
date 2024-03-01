@@ -74,6 +74,8 @@ CL-USER>
 
   @u(Available iterators)
   @cl:with-package[name="stateless-iterators"](
+    @cl:doc(variable +empty+)
+    @cl:doc(function singleton)
     @cl:doc(function list->iterator)
     @cl:doc(function vector->iterator)
     @cl:doc(function take)

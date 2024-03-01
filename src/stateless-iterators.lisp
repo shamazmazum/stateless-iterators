@@ -90,6 +90,25 @@ inverse of @c(list->iterator)."
             ptr (cdr ptr)))
     (cdr acc)))
 
+;; Empty iterator
+(defun empty/next (state)
+  (declare (ignore state))
+  (values nil 'stop))
+
+(defparameter +empty+
+  (iterator #'empty/next nil)
+  "An empty iterator.")
+
+(defun singleton/next (state)
+  (destructuring-bind (state . value) state
+    (ecase state
+      ((t)   (values value (cons nil value)))
+      ((nil) (values value 'stop)))))
+
+(defun singleton (value)
+  "Return an iterator containing only one specified value"
+  (iterator #'singleton/next (cons t value)))
+
 ;; Converting sequences to iterator
 (defun list->iterator/next (list)
   (values (car list)

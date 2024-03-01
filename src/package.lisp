@@ -13,6 +13,8 @@
            #:list->iterator
            #:vector->iterator
 
+           #:+empty+
+           #:singleton
            #:count-from
            #:range
            #:take
