@@ -32,4 +32,5 @@
            #:concat
            #:product
            #:filter
+           #:power
            #:indices))

@@ -94,6 +94,7 @@ CL-USER>
     @cl:doc(function concat)
     @cl:doc(function product)
     @cl:doc(function filter)
+    @cl:doc(function power)
     @cl:doc(function indices)
 )
 @end(section)

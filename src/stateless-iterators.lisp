@@ -457,12 +457,27 @@ which satisfy @c(predicate).
 through all possible indices in the array.
 
 @begin[lang=lisp](code)
-(stateless-iterators:collect (stateless-iterators:indices '(3 4 2))) ->
+(collect (indices '(3 4 2))) ->
 '((0 0 0) (0 0 1) (0 1 0) (0 1 1) (0 2 0) (0 2 1) (0 3 0) (0 3 1) (1 0 0)
   (1 0 1) (1 1 0) (1 1 1) (1 2 0) (1 2 1) (1 3 0) (1 3 1) (2 0 0) (2 0 1)
   (2 1 0) (2 1 1) (2 2 0) (2 2 1) (2 3 0) (2 3 1))
 @end(code)"
   (reduce #'product
           (mapcar (lambda (d) (range 0 d)) dimensions)
+          :from-end t
+          :initial-value (singleton nil)))
+
+(sera:-> power (iterator (integer 1))
+         (values iterator &optional))
+(defun power (iterator n)
+  "For an iterator which contains a set of elements \\(A\\), return an
+  iterator which contains all elements of \\(A^n\\).
+@begin[lang=lisp](code)
+
+(collect (power (list->iterator '(-1 0 1)) 2)) ->
+'((-1 -1) (-1 0) (-1 1) (0 -1) (0 0) (0 1) (1 -1) (1 0) (1 1))
+@end(code)"
+  (reduce #'product
+          (loop repeat n collect iterator)
           :from-end t
           :initial-value (singleton nil)))
