@@ -96,5 +96,7 @@ CL-USER>
     @cl:doc(function filter)
     @cl:doc(function power)
     @cl:doc(function indices)
+    @cl:doc(function every)
+    @cl:doc(function some)
 )
 @end(section)

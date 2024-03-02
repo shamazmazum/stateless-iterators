@@ -481,3 +481,36 @@ through all possible indices in the array.
           (loop repeat n collect iterator)
           :from-end t
           :initial-value (singleton nil)))
+
+(sera:-> every ((sera:-> (t) (values boolean &optional)) iterator)
+         (values boolean &optional))
+(defun every (predicate iterator)
+  "Return @c(t) if @c(predicate) is true for every element contained
+in the iterator and @c(nil) otherwise."
+  (let ((next  (iterator-next iterator))
+        (state (iterator-init-state iterator)))
+    (labels ((%every (state)
+               (multiple-value-bind (value next-state)
+                   (funcall next state)
+                 (cond
+                   ((eq next-state 'stop) t)
+                   ((funcall predicate value)
+                    (%every next-state))
+                   (t nil)))))
+      (%every state))))
+
+(sera:-> some ((sera:-> (t) (values boolean &optional)) iterator)
+         (values boolean &optional))
+(defun some (predicate iterator)
+  "Return @c(t) if @c(predicate) is true for at least one element
+contained in the iterator and @c(nil) otherwise."
+  (let ((next  (iterator-next iterator))
+        (state (iterator-init-state iterator)))
+    (labels ((%some (state)
+               (multiple-value-bind (value next-state)
+                   (funcall next state)
+                 (cond
+                   ((eq next-state 'stop) nil)
+                   ((funcall predicate value) t)
+                   (t (%some next-state))))))
+      (%some state))))

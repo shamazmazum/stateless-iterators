@@ -89,15 +89,23 @@
                    (1 0 0) (1 0 1) (1 1 0) (1 1 1))))))
 
 (test filter
-      (is (cequalp (si:take 6 (si:filter #'oddp (si:count-from 0)))
-                   '(1 3 5 7 9 11))))
+  (is (cequalp (si:take 6 (si:filter #'oddp (si:count-from 0)))
+               '(1 3 5 7 9 11))))
 
 (test indices
-      (is (cequalp (si:indices '(3 4 2))
-                   '((0 0 0) (0 0 1) (0 1 0) (0 1 1) (0 2 0) (0 2 1) (0 3 0) (0 3 1) (1 0 0)
-                     (1 0 1) (1 1 0) (1 1 1) (1 2 0) (1 2 1) (1 3 0) (1 3 1) (2 0 0) (2 0 1)
-                     (2 1 0) (2 1 1) (2 2 0) (2 2 1) (2 3 0) (2 3 1)))))
+  (is (cequalp (si:indices '(3 4 2))
+               '((0 0 0) (0 0 1) (0 1 0) (0 1 1) (0 2 0) (0 2 1) (0 3 0) (0 3 1) (1 0 0)
+                 (1 0 1) (1 1 0) (1 1 1) (1 2 0) (1 2 1) (1 3 0) (1 3 1) (2 0 0) (2 0 1)
+                 (2 1 0) (2 1 1) (2 2 0) (2 2 1) (2 3 0) (2 3 1)))))
 
 (test power
-      (is (cequalp (si:power (si:list->iterator '(-1 0 1)) 2)
-                   '((-1 -1) (-1 0) (-1 1) (0 -1) (0 0) (0 1) (1 -1) (1 0) (1 1)))))
+  (is (cequalp (si:power (si:list->iterator '(-1 0 1)) 2)
+               '((-1 -1) (-1 0) (-1 1) (0 -1) (0 0) (0 1) (1 -1) (1 0) (1 1)))))
+
+(test every
+  (is-true  (si:every #'evenp (si:list->iterator '(2 4 6 8))))
+  (is-false (si:every #'evenp (si:list->iterator '(2 4 1 8)))))
+
+(test some
+  (is-true  (si:some #'evenp (si:list->iterator '(2 1 6 8))))
+  (is-false (si:some #'evenp (si:list->iterator '(1 3 1 1)))))
