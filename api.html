@@ -125,8 +125,13 @@ as for the following, but without consing:<pre><code class="lisp">(reduce functi
     <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">filter</code><code class="codex-lambda-list">(predicate iterator)</code><div class="codex-docstring">Create an iterator which returns only those values of <code>iterator</code>
 which satisfy <code>predicate</code>.<pre><code class="lisp">(collect (take 6 (filter #'oddp (count-from 0)))) -&gt; '(1 3 5 7 9 11)
 </code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">power</code><code class="codex-lambda-list">(iterator n)</code><div class="codex-docstring">For an iterator which contains a set of elements \(A\), return an
+  iterator which contains all elements of \(A^n\).
+<pre><code class="lisp">(collect (power (list-&gt;iterator '(-1 0 1)) 2)) -&gt;
+'((-1 -1)(-1 0)(-1 1)(0 -1)(0 0)(0 1)(1 -1)(1 0)(1 1))
+</code></pre></div></div>
     <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">indices</code><code class="codex-lambda-list">(dimensions)</code><div class="codex-docstring">For a list of array dimensions, return an iterator which iterates
-through all possible indices in the array.<pre><code class="lisp">(stateless-iterators:collect (stateless-iterators:indices '(3 4 2))) -&gt;
+through all possible indices in the array.<pre><code class="lisp">(collect (indices '(3 4 2))) -&gt;
 '((0 0 0)(0 0 1)(0 1 0)(0 1 1)(0 2 0)(0 2 1)(0 3 0)(0 3 1)(1 0 0)
   (1 0 1)(1 1 0)(1 1 1)(1 2 0)(1 2 1)(1 3 0)(1 3 1)(2 0 0)(2 0 1)
   (2 1 0)(2 1 1)(2 2 0)(2 2 1)(2 3 0)(2 3 1))
