@@ -31,4 +31,5 @@
            #:cycle
            #:concat
            #:product
-           #:filter))
+           #:filter
+           #:indices))

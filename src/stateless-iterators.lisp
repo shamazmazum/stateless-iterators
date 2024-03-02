@@ -449,3 +449,20 @@ which satisfy @c(predicate).
 @end(code)"
   (iterator (filter/next (iterator-next iterator) predicate)
             (iterator-init-state iterator)))
+
+(sera:-> indices (list)
+         (values iterator &optional))
+(defun indices (dimensions)
+  "For a list of array dimensions, return an iterator which iterates
+through all possible indices in the array.
+
+@begin[lang=lisp](code)
+(stateless-iterators:collect (stateless-iterators:indices '(3 4 2))) ->
+'((0 0 0) (0 0 1) (0 1 0) (0 1 1) (0 2 0) (0 2 1) (0 3 0) (0 3 1) (1 0 0)
+  (1 0 1) (1 1 0) (1 1 1) (1 2 0) (1 2 1) (1 3 0) (1 3 1) (2 0 0) (2 0 1)
+  (2 1 0) (2 1 1) (2 2 0) (2 2 1) (2 3 0) (2 3 1))
+@end(code)"
+  (reduce #'product
+          (mapcar (lambda (d) (range 0 d)) dimensions)
+          :from-end t
+          :initial-value (singleton nil)))
