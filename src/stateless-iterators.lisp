@@ -514,3 +514,25 @@ contained in the iterator and @c(nil) otherwise."
                    ((funcall predicate value) t)
                    (t (%some next-state))))))
       (%some state))))
+
+(sera:-> find-if ((sera:-> (t) (values t &optional)) iterator)
+         (values t iterator &optional))
+(defun find-if (predicate iterator)
+  "Return the first value which satisfies the predicate. The second
+returned value is an iterator which contains values past this
+value. You can use @c(drop-while) if the first value is not needed."
+  (declare (optimize (speed 3)))
+  (let ((next       (iterator-next       iterator))
+        (init-state (iterator-init-state iterator)))
+    (labels ((%find (state)
+               (multiple-value-bind (value next-state)
+                   (funcall next state)
+                 (cond
+                   ((eq next-state 'stop)
+                    (values nil 'stop))
+                   ((funcall predicate value)
+                    (values value next-state))
+                   (t (%find next-state))))))
+      (multiple-value-bind (value state)
+          (%find init-state)
+        (values value (iterator next state))))))

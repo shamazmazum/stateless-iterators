@@ -109,3 +109,10 @@
 (test some
   (is-true  (si:some #'evenp (si:list->iterator '(2 1 6 8))))
   (is-false (si:some #'evenp (si:list->iterator '(1 3 1 1)))))
+
+(test find-if
+  (multiple-value-bind (value iter)
+      (si:find-if (lambda (x) (> x 4))
+                  (si:list->iterator '(1 2 3 4 5 6)))
+    (is (= value 5))
+    (is (cequalp iter '(6)))))

@@ -1,6 +1,6 @@
 (defpackage stateless-iterators
   (:use #:cl)
-  (:shadow #:nth #:every #:some)
+  (:shadow #:nth #:every #:some #:find-if)
   (:local-nicknames (#:sera #:serapeum))
   (:export #:iterator
            #:stop
@@ -35,4 +35,5 @@
            #:power
            #:indices
            #:every
-           #:some))
+           #:some
+           #:find-if))
