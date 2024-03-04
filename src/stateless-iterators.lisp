@@ -482,7 +482,7 @@ through all possible indices in the array.
           :from-end t
           :initial-value (singleton nil)))
 
-(sera:-> every ((sera:-> (t) (values boolean &optional)) iterator)
+(sera:-> every ((sera:-> (t) (values t &optional)) iterator)
          (values boolean &optional))
 (defun every (predicate iterator)
   "Return @c(t) if @c(predicate) is true for every element contained
@@ -499,7 +499,7 @@ in the iterator and @c(nil) otherwise."
                    (t nil)))))
       (%every state))))
 
-(sera:-> some ((sera:-> (t) (values boolean &optional)) iterator)
+(sera:-> some ((sera:-> (t) (values t &optional)) iterator)
          (values boolean &optional))
 (defun some (predicate iterator)
   "Return @c(t) if @c(predicate) is true for at least one element
