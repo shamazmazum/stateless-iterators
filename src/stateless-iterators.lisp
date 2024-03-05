@@ -462,8 +462,8 @@ through all possible indices in the array.
   (1 0 1) (1 1 0) (1 1 1) (1 2 0) (1 2 1) (1 3 0) (1 3 1) (2 0 0) (2 0 1)
   (2 1 0) (2 1 1) (2 2 0) (2 2 1) (2 3 0) (2 3 1))
 @end(code)"
-  (reduce #'product
-          (mapcar (lambda (d) (range 0 d)) dimensions)
+  (reduce #'product dimensions
+          :key (lambda (d) (range 0 d))
           :from-end t
           :initial-value (singleton nil)))
 
