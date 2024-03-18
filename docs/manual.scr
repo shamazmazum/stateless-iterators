@@ -80,6 +80,7 @@ CL-USER>
     @cl:doc(function vector->iterator)
     @cl:doc(function take)
     @cl:doc(function iterate)
+    @cl:doc(function unfold)
     @cl:doc(function count-from)
     @cl:doc(function range)
     @cl:doc(function take-while)

@@ -70,6 +70,14 @@
   (is (cequalp (si:take 4 (si:iterate (alex:rcurry #'/ 2) 1))
                '(1 1/2 1/4 1/8))))
 
+(test unfold
+  (is (cequalp
+       (si:unfold
+        (lambda (state)
+          (values state (if (< state 5) (1+ state) 'si:stop)))
+        1)
+       '(1 2 3 4))))
+
 (test cycle
   (is (cequalp (si:take 10 (si:cycle (si:list->iterator '(1 2 3))))
                '(1 2 3 1 2 3 1 2 3 1))))

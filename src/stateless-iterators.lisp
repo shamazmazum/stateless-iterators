@@ -164,13 +164,45 @@ stops.
 (sera:-> iterate ((function (t) t) t)
          (values iterator &optional))
 (defun iterate (function x)
-  "Create an infinite iterator whose values are @c(x) @c(f(x))
-@c(f(f(x))) …
+  "Create an infinite iterator whose values are @c(x), @c(f(x)),
+@c(f(f(x))) and so on.
 
 @begin[lang=lisp](code)
 (collect (take 3 (iterate (lambda (x) (/ x 2)) 1))) -> '(1 1/2 1/4)
 @end(code)"
   (iterator (iterate/next function) x))
+
+;; Unfold
+(defun unfold/next (function)
+  (lambda (state)
+    (funcall function state)))
+
+(sera:-> unfold ((sera:-> (t) (values t t &optional)) t)
+         (values iterator &optional))
+(defun unfold (function x)
+  "When an element is forced from this iterator, it calls a function
+@c(function) with the current state and uses the first returned value
+as the element and the second value as a next state. @c(x) is an
+initial state for iteration. A generation of new values can be stopped
+if the symbol @c(stop) is the second returned value from @c(function).
+
+These two calls are equivalent:
+@begin[lang=lisp](code)
+(iterate fn x)
+(unfold (lambda (state) (values state (funcall fn state))) x)
+@end(code)
+
+Example:
+@begin[lang=lisp](code)
+(collect
+ (unfold
+  (lambda (state)
+    (values
+     (* state 2)
+     (if (< state 5) (1+ state) 'stop)))
+  1)) -> '(2 4 6 8)
+@end(code)"
+  (iterator (unfold/next function) x))
 
 ;; Counters
 (defun count-from/next (state)
