@@ -83,8 +83,24 @@ not default.</p></div></div>
 stops.<pre><code class="lisp">(collect (take 3 (list-&gt;iterator '(1 2 3 4)))) -&gt; '(1 2 3)
 (collect (take 3 (list-&gt;iterator '(1)))) -&gt; '(1)
 </code></pre></div></div>
-    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">iterate</code><code class="codex-lambda-list">(function x)</code><div class="codex-docstring">Create an infinite iterator whose values are <code>x</code><code>f(x)</code>
-<code>f(f(x))</code> …<pre><code class="lisp">(collect (take 3 (iterate (lambda (x)(/ x 2)) 1))) -&gt; '(1 1/2 1/4)
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">iterate</code><code class="codex-lambda-list">(function x)</code><div class="codex-docstring">Create an infinite iterator whose values are <code>x</code>, <code>f(x)</code>,
+<code>f(f(x))</code> and so on.<pre><code class="lisp">(collect (take 3 (iterate (lambda (x)(/ x 2)) 1))) -&gt; '(1 1/2 1/4)
+</code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">unfold</code><code class="codex-lambda-list">(function x)</code><div class="codex-docstring"><p>When an element is forced from this iterator, it calls a function
+<code>function</code> with the current state and uses the first returned value
+as the element and the second value as a next state. <code>x</code> is an
+initial state for iteration. A generation of new values can be stopped
+if the symbol <code>stop</code> is the second returned value from <code>function</code>.</p><p>These two calls are equivalent:
+</p><pre><code class="lisp">(iterate fn x)
+(unfold (lambda (state)(values state (funcall fn state))) x)
+</code></pre><p>Example:
+</p><pre><code class="lisp">(collect
+ (unfold
+  (lambda (state)
+    (values
+     (* state 2)
+     (if (&lt; state 5)(1+ state) 'stop)))
+  1)) -&gt; '(2 4 6 8)
 </code></pre></div></div>
     <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">count-from</code><code class="codex-lambda-list">(n)</code><div class="codex-docstring">An infinite counting iterator which starts from <code>n</code> and
 increments each next value by 1.<pre><code class="lisp">(collect (take 4 (count-from 1))) -&gt; '(1 2 3 4)
