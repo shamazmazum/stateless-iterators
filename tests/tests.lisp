@@ -124,3 +124,14 @@
                   (si:list->iterator '(1 2 3 4 5 6)))
     (is (= value 5))
     (is (cequalp iter '(6)))))
+
+(test take-is-not-redundant
+  (let ((counter 0))
+    (si:collect
+        (si:take
+         3 (si:unfold
+            (lambda (state)
+              (incf counter)
+              (values (1+ state) (* state 2)))
+            1)))
+    (is (= counter 3))))

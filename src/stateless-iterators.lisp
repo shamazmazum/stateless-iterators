@@ -136,12 +136,13 @@ inverse of @c(list->iterator)."
 (defun take/next (n next)
   (lambda (state)
     (destructuring-bind (counter . inner-state) state
-      (multiple-value-bind (val new-inner-state)
-          (funcall next inner-state)
-        (values val
-                (if (and (< counter n) (not (eq new-inner-state 'stop)))
-                    (cons (1+ counter) new-inner-state)
-                    'stop))))))
+      (if (< counter n)
+          (multiple-value-bind (val new-inner-state)
+              (funcall next inner-state)
+            (values
+             val (if (eq new-inner-state 'stop)
+                     'stop (cons (1+ counter) new-inner-state))))
+          (values nil 'stop)))))
 
 (sera:-> take ((integer 0) iterator)
          (values iterator &optional))
