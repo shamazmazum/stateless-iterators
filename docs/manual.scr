@@ -68,6 +68,7 @@ CL-USER>
     @cl:doc(function iterate-for-effects)
     @cl:doc(macro do-iterator)
     @cl:doc(function collect)
+    @cl:doc(function length)
     @cl:doc(function consume-one)
     @cl:doc(function nth)
   )

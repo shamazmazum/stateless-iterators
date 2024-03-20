@@ -8,7 +8,7 @@
   :pathname "src/"
   :components ((:file "package")
                (:file "stateless-iterators"))
-  :depends-on (:serapeum)
+  :depends-on (:serapeum :alexandria)
   :in-order-to ((test-op (load-op "stateless-iterators/tests")))
   :perform (test-op (op system)
                     (declare (ignore op system))

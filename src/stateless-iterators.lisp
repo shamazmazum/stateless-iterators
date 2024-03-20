@@ -119,7 +119,7 @@ inverse of @c(list->iterator)."
   (iterator #'list->iterator/next list))
 
 (defun vector->iterator/next (vector)
-  (let ((length (length vector)))
+  (let ((length (cl:length vector)))
     (lambda (state)
       (if (< state length)
           (values (aref vector state)
@@ -569,3 +569,13 @@ value. You can use @c(drop-while) if the first value is not needed."
       (multiple-value-bind (value state)
           (%find init-state)
         (values value (iterator next state))))))
+
+(sera:-> length (iterator)
+         (values alex:non-negative-fixnum &optional))
+(defun length (iterator)
+  "Return a number of elements in the iterator"
+  (foldl
+   (lambda (acc element)
+     (declare (ignore element))
+     (1+ acc))
+   0 iterator))

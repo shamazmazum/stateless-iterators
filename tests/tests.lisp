@@ -16,7 +16,9 @@
   (let ((list   '(1 2 3))
         (vector #(1 2 3)))
     (is (cequalp (si:list->iterator   list)   list))
-    (is (cequalp (si:vector->iterator vector) list))))
+    (is (cequalp (si:vector->iterator vector) list))
+    (is (= (si:length (si:list->iterator   list)) 3))
+    (is (= (si:length (si:vector->iterator vector)) 3))))
 
 (test count-from+take
   (is (cequalp (si:take 5 (si:count-from 2)) '(2 3 4 5 6))))
