@@ -28,6 +28,7 @@
            #:repeat
            #:replicate
            #:foldl
+           #:foldr
            #:iterate
            #:unfold
            #:cycle

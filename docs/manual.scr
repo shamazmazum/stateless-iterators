@@ -92,6 +92,7 @@ CL-USER>
     @cl:doc(function repeat)
     @cl:doc(function replicate)
     @cl:doc(function foldl)
+    @cl:doc(function foldr)
     @cl:doc(function cycle)
     @cl:doc(function concat)
     @cl:doc(function product)

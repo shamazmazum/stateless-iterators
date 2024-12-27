@@ -68,6 +68,11 @@
                    (si:replicate 2 3))
          12)))
 
+(test foldr
+  (is (= (si:foldr (sera:hook2 #'+ (alex:curry #'* 2)) 0
+                   (si:replicate 2 3))
+         14)))
+
 (test iterate
   (is (cequalp (si:take 4 (si:iterate (alex:rcurry #'/ 2) 1))
                '(1 1/2 1/4 1/8))))

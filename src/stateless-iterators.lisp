@@ -370,6 +370,7 @@ is an integer which is incremented by 1 starting from 0.
 ;; Folding
 (sera:-> foldl ((function (t t) t) t iterator)
          (values t &optional))
+(declaim (inline foldl))
 (defun foldl (function init iterator)
   "Left-associative fold for iterators. The returned value is the same
 as for the following, but without consing:
@@ -377,10 +378,27 @@ as for the following, but without consing:
 @begin[lang=lisp](code)
 (reduce function (collect iterator) :initial-value init)
 @end(code)"
+  (declare (optimize (speed 3)))
   (let ((acc init))
     (do-iterator (x iterator)
       (setq acc (funcall function acc x)))
     acc))
+
+(sera:-> foldr ((function (t t) t) t iterator)
+         (values t &optional))
+(declaim (inline foldr))
+(defun foldr (function init iterator)
+  "Right-associative fold for iterators. The returned value is the same
+as for the following, but maybe more effective:
+
+@begin[lang=lisp](code)
+(reduce function (collect iterator) :initial-value init :from-end t)
+@end(code)"
+  (declare (optimize (speed 3)))
+  (funcall
+   (foldl (lambda (g x) (lambda (y) (funcall g (funcall function x y))))
+          #'identity iterator)
+   init))
 
 ;; Cycle
 (defun cycle/next (next first-state)
