@@ -132,6 +132,9 @@ but drops initial values which satisfy the <code>predicate</code>.<pre><code cla
     <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">foldl</code><code class="codex-lambda-list">(function init iterator)</code><div class="codex-docstring">Left-associative fold for iterators. The returned value is the same
 as for the following, but without consing:<pre><code class="lisp">(reduce function (collect iterator) :initial-value init)
 </code></pre></div></div>
+    <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">foldr</code><code class="codex-lambda-list">(function init iterator)</code><div class="codex-docstring">Right-associative fold for iterators. The returned value is the same
+as for the following, but maybe more effective:<pre><code class="lisp">(reduce function (collect iterator) :initial-value init :from-end t)
+</code></pre></div></div>
     <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">cycle</code><code class="codex-lambda-list">(iterator)</code><div class="codex-docstring">Repeat values of <code>iterator</code> infinitely.<pre><code class="lisp">(collect (take 5 (cycle (list-&gt;iterator '(1 2 3))))) -&gt; '(1 2 3 1 2)
 </code></pre></div></div>
     <div class="codex-doc-node codex-operator codex-function"><code class="codex-name">concat</code><code class="codex-lambda-list">(&amp;rest iterators)</code><div class="codex-docstring">Concatenate one or more iterators into one iterator.<pre><code class="lisp">(collect (concat (replicate 3 2)(replicate 1 3))) -&gt; '(3 3 1 1 1)
