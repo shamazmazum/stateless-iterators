@@ -142,3 +142,9 @@
               (values (1+ state) (* state 2)))
             1)))
     (is (= counter 3))))
+
+(test undefined-values
+  (let ((iterator (si:concat (si:list->iterator '(1 2 3))
+                             (si:undefined "Not defined"))))
+    (finishes (si:collect (si:take 3 iterator)))
+    (signals si:undefined-value (si:collect (si:take 4 iterator)))))

@@ -40,4 +40,6 @@
            #:every
            #:some
            #:find-if
-           #:length))
+           #:length
+           #:undefined
+           #:undefined-value))

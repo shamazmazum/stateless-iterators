@@ -1,6 +1,6 @@
 (defsystem :stateless-iterators
   :name :stateless-iterators
-  :version "0.1"
+  :version "0.2"
   :author "Vasily Postnicov <shamaz.mazum@gmail.com>"
   :description "Stateless iterators similar to those in Lua (or Julia) language"
   :licence "2-clause BSD"
@@ -16,7 +16,7 @@
 
 (defsystem :stateless-iterators/tests
   :name :stateless-iterators/tests
-  :version "0.1"
+  :version "0.2"
   :author "Vasily Postnicov <shamaz.mazum@gmail.com>"
   :licence "2-clause BSD"
   :serial t

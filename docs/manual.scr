@@ -101,5 +101,7 @@ CL-USER>
     @cl:doc(function indices)
     @cl:doc(function every)
     @cl:doc(function some)
+    @cl:doc(condition undefined-value)
+    @cl:doc(function undefined)
 )
 @end(section)

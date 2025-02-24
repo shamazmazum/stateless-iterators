@@ -597,3 +597,24 @@ value. You can use @c(drop-while) if the first value is not needed."
      (declare (ignore element))
      (1+ acc))
    0 iterator))
+
+;; Undefined
+(define-condition undefined-value (error)
+  ((string :reader        undefined-value-string
+           :initarg       :string
+           :documentation "Additional clarification of what happened"))
+  (:report
+   (lambda (c s)
+     (format s "Trying to force an undefined value: ~a"
+             (undefined-value-string c))))
+  (:documentation "A condition signalled by @c(undefined)."))
+
+(defun undefined/next (state)
+  (values (error 'undefined-value :string state) nil))
+
+(sera:-> undefined (string)
+         (values iterator &optional))
+(defun undefined (string)
+  "When a value is forced out of this iterator, a condition of type
+@c(undefined-value) is signalled with a supplied text."
+  (iterator #'undefined/next string))
